@@ -41,22 +41,31 @@ class _TestWidgetState extends State<TestWidget> {
           'Count : $value',
           style: const TextStyle(fontSize: 30),
         ),
-        const TestButton(),
+        TestButton(addCounter),
       ],
     );
   }
+
+  // void addCounter() => setState(() => ++value);
+  void addCounter(int addValue) => setState(() => value = value + addValue);
 }
 
 class TestButton extends StatelessWidget {
-  const TestButton({super.key});
+  const TestButton(this.callback, {super.key});
+
+  // final VoidCallback callback;
+  final Function(int) callback;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8),
       width: double.infinity,
-      child: GestureDetector(
-        onTap: () => print('Tab!'),
+      // GestureDetector, InkWell
+      child: InkWell(
+        onTap: () => callback.call(1),
+        onDoubleTap: () => callback.call(5),
+        onLongPress: () => callback.call(10),
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
           decoration: BoxDecoration(border: Border.all()),
